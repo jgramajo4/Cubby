@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!--
+      App Transport Security.
+
+      RECOMMENDED: run `tailscale serve https / http://localhost:5230` on the
+      host so Memos is reachable at https://<name>.<tailnet>.ts.net with a real
+      cert. Then you can DELETE this whole NSAppTransportSecurity block — no
+      exception is needed for HTTPS.
+
+      This block is only a fallback for plain-HTTP setups. It:
+        - allows localhost / RFC1918 LAN during simulator development, and
+        - permits insecure HTTP to *.ts.net MagicDNS names (already encrypted
+          by WireGuard underneath).
+
+      NOTE: use the .ts.net hostname, not the bare 100.x Tailscale IP, over
+      plain HTTP — IP literals and the 100.64/10 CGNAT range are NOT covered
+      by these exceptions. HTTPS via `tailscale serve` avoids all of this.
+    -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsLocalNetworking</key>
+        <true/>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>ts.net</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+            </dict>
+        </dict>
+    </dict>
+</dict>
+</plist>
